@@ -1,0 +1,2 @@
+startshare - I want to start sharing matches
+endshare - I want to end sharing matches
