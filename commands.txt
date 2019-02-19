@@ -1,2 +1,6 @@
-startshare - I want to start sharing matches
-endshare - I want to end sharing matches
+share - Start Share
+join - Start Join
+end - End
+requestshare - Request Share
+requestjoin - Request Join
+status - Status

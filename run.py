@@ -1,39 +1,14 @@
 from telegram.ext import Updater, CommandHandler
 from telegram.ext import MessageHandler, Filters
-import telegram
+from db.users import Users
+from db.commands import Commands
 
-users = {
-    "mahmoodramzani": 86168181
-}
-
-
-def findBy_username(username):
-    for u in users:
-        if u == username:
-            return users[u]
-
-    return None
-
-
-def findBy_chatId(chatId):
-    for u in users:
-        chat_id = users[u]
-
-        if chat_id == chatId:
-            return u
-
-    return None
-
-
-def get_message_from_command(command):
-    if command == "/startshare":
-        return "I want to start sharing matches"
-    elif command == "/endshare":
-        return "I want to end sharing matches"
+users_db = Users()
+updater = Updater('650043603:AAHZ3l8Nf1gcq5qwD7h6kZlk5zbclt8A6vA')
+bot = updater.bot
 
 
 def send_message(chat_id, msg):
-    bot = telegram.Bot(token="795009386:AAEdLuGrzmGlJE3qdo1nXHlMFojl3mbMQLU")
     bot.send_message(chat_id=chat_id, text=msg)
 
 
@@ -41,29 +16,74 @@ def receive_message(bot, update):
     chat_id = update.message.chat_id
     # bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
 
-    if findBy_chatId(chat_id) is None:
-        bot.send_message(chat_id=update.message.chat_id, text=chat_id)
+    user = users_db.findBy_chatId(chat_id)
+
+    if user is None:
+        send_message(update.message.chat_id, chat_id)
     else:
         text: str = update.message.text
 
         if text.startswith("/"):
-            username = update.message.username
-            msg = get_message_from_command(text)
 
-            output = username + " : " + msg
+            if text == "/share":
 
-            for u in users:
+                output = Commands.share(chat_id)
+                send_message(chat_id, output)
 
-                if u == username:
-                    # pass
-                    chat_id = users[u]
-                    send_message(chat_id, output)
-                else:
-                    chat_id = users[u]
-                    send_message(chat_id, output)
+            elif text == "/join":
 
+                output = Commands.join(chat_id)
+                send_message(chat_id, output)
 
-updater = Updater('650043603:AAHZ3l8Nf1gcq5qwD7h6kZlk5zbclt8A6vA')
+            elif text == "/end":
+
+                output = Commands.end(chat_id)
+                send_message(chat_id, output)
+
+            elif text == "/requestshare":
+
+                users = Users()
+                all_users = users.find_all()
+                output = Commands.request_share(chat_id)
+
+                for u in all_users:
+                    if u["chatId"] == chat_id:
+
+                        # pass
+                        new_chat_id = u["chatId"]
+                        send_message(new_chat_id, output)
+
+                    else:
+                        new_chat_id = u["chatId"]
+                        send_message(new_chat_id, output)
+
+            elif text == "/requestjoin":
+                users = Users()
+                all_users = users.find_all()
+                output = Commands.request_join(chat_id)
+
+                for u in all_users:
+                    if u["chatId"] == chat_id:
+
+                        # pass
+                        new_chat_id = u["chatId"]
+                        send_message(new_chat_id, output)
+
+                    else:
+                        new_chat_id = u["chatId"]
+                        send_message(new_chat_id, output)
+
+            elif text == "/status":
+                output = Commands.status()
+                send_message(chat_id, output)
+            elif text == "/start":
+                output = "Persian Pro Club"
+                send_message(chat_id, output)
+            else:
+                send_message(chat_id, "Unrecognized command!!!")
+        else:
+            send_message(chat_id, "Unrecognized!!!")
+
 
 receive_handler = MessageHandler(Filters.all, receive_message)
 updater.dispatcher.add_handler(receive_handler)
