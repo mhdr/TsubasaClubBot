@@ -1,6 +1,6 @@
-share - Start Share
-join - Start Join
-end - End
-requestshare - Request Share
-requestjoin - Request Join
-status - Status
+share - dorost kardan share
+join - mikham join sham
+end - man raftam
+requestshare - yeki biad share kone
+requestjoin - yeki biad join she
+status - vaziat

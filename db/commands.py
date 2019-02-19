@@ -29,7 +29,7 @@ class Commands:
         users = Users()
         matches = users.findBy_chatId(chatId)
         username = matches["username"]
-        output = "@{username} : Request Join".format(username=username)
+        output = "@{username} : yeki biad join she".format(username=username)
         return output
 
     @staticmethod
@@ -37,7 +37,7 @@ class Commands:
         users = Users()
         matches = users.findBy_chatId(chatId)
         username = matches["username"]
-        output = "@{username} : Request Share".format(username=username)
+        output = "@{username} : yeki biad share kone".format(username=username)
         return output
 
     @staticmethod
