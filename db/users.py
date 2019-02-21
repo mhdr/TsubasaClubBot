@@ -2,7 +2,7 @@ import pymongo
 from pymongo import MongoClient
 
 
-# Status : {1=Share,2=Join,3=End}
+# Status : {1=Share,2=Join,3=End,Unclear=4}
 
 class Users:
     client = None
@@ -30,12 +30,20 @@ class Users:
         count = self.collection.count_documents({"status": 2})
         return count
 
+    def count_unclear(self):
+        count = self.collection.count_documents({"status": 4})
+        return count
+
     def find_start_share(self):
         matches = self.collection.find({"status": 1}).sort("username", pymongo.ASCENDING)
         return matches
 
     def find_start_join(self):
         matches = self.collection.find({"status": 2}).sort("username", pymongo.ASCENDING)
+        return matches
+
+    def find_unclear(self):
+        matches = self.collection.find({"status": 4}).sort("username", pymongo.ASCENDING)
         return matches
 
     def update_status(self, chatId, status):

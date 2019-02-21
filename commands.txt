@@ -1,6 +1,9 @@
 share - dorost kardan share
 join - mikham join sham
+unclear - vaziat man namoshakhas ast
 end - man raftam
 requestshare - yeki biad share kone
 requestjoin - yeki biad join she
+ad - daram tablighat mibinam
+noenergy - energy tamoom shod
 status - vaziat
